@@ -4,13 +4,13 @@ import { Todo, TodoListProps } from './dataStructure';
 
 export class TodoListBody extends React.Component<TodoListProps>  {
     handleClickCheckbox(todo: Todo): void {
-        const changeTodo = todo;
-        changeTodo.isCompleted = !todo.isCompleted;
+        const changeTodo = { ...todo };
+        changeTodo.isCompleted = !changeTodo.isCompleted;
         this.props.updateItem(todo, changeTodo);
     }
 
     handleDoubleClickTodo(todo: Todo): void {
-        const changeTodo = todo;
+        const changeTodo = { ...todo };
         changeTodo.editable = !changeTodo.editable;
         this.props.updateItem(todo, changeTodo);
     }
@@ -18,7 +18,7 @@ export class TodoListBody extends React.Component<TodoListProps>  {
     handleKeyDownTodo(e: React.KeyboardEvent<HTMLInputElement>, todo: Todo)
         : void {
         if (e.key === "Enter") {
-            const changeTodo = todo;
+            const changeTodo = { ...todo };
             changeTodo.content = (e.target as HTMLInputElement).value;
             changeTodo.editable = !changeTodo.editable;
             this.props.updateItem(todo, changeTodo);
