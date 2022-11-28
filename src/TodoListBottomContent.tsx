@@ -2,7 +2,7 @@ import { Todo } from './dataStructure';
 
 
 type Props = {
-    todos: Todo[],
+    todos: Todo[];
     deleteItem(todosToDelete: Todo[]): void;
 }
 

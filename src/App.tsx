@@ -1,6 +1,6 @@
 import React from 'react';
 import { TodoListInputHeader } from './TodoListInputHeader'
-import { TodoListBody } from './TodoListBody';
+import { TodoListItem } from './TodoListItem';
 import { TodoListBottomContent } from './TodoListBottomContent';
 import { Todo } from './dataStructure';
 
@@ -42,20 +42,26 @@ class App extends React.Component<Props, State> {
   }
 
   render(): React.ReactNode {
+    const renderTodoList = this.state.todos.map((todo) => {
+      return (
+        <TodoListItem
+          todo={todo}
+          addItem={(todo) => this.addTodoListItem(todo)}
+          deleteItem={(todoToDelete) => this.deleteTodoListItem(todoToDelete)}
+          updateItem={(todo, afterChangeTodo) => this.updateTodoListItem(todo, afterChangeTodo)}
+        />
+      );
+    });
+
     return (
       <div className="app" >
         <div className="title">Todo List</div>
         <div className="contentWrapper">
           <TodoListInputHeader
             addItem={(todo) => this.addTodoListItem(todo)} />
-          <TodoListBody
-            todos={this.state.todos}
-            addItem={(todo) => this.addTodoListItem(todo)}
-            deleteItem={(todoToDelete) => this.deleteTodoListItem(todoToDelete)}
-            updateItem={
-              (todo, afterChangeTodo) =>
-                this.updateTodoListItem(todo, afterChangeTodo)
-            } />
+          <ul className="list">
+            {renderTodoList}
+          </ul>
           <TodoListBottomContent
             todos={this.state.todos}
             deleteItem={

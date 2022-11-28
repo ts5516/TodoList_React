@@ -2,45 +2,69 @@ import React from 'react';
 import { Todo } from './dataStructure';
 
 type Props = {
-    item: Todo,
-    onClickCheckbox(todo: Todo): void,
-    onClickDeleteButton(todo: Todo): void,
-    onDoubleClickTodo(todo: Todo): void,
-    onKeyDownTodo(e: React.KeyboardEvent<HTMLInputElement>, todo: Todo): void
+    todo: Todo;
+    addItem(todo: Todo): void;
+    deleteItem(todosToDelete: Todo[]): void;
+    updateItem(nowTodo: Todo, afterChangeTodo: Todo): void;
 }
 
 export function TodoListItem(props: Props) {
-    const todo = props.item;
-    if (todo.editable) {
+    const handleClickCheckbox = (todo: Todo) => {
+        const changeTodo = { ...todo };
+        changeTodo.isCompleted = !changeTodo.isCompleted;
+        props.updateItem(todo, changeTodo);
+    }
+
+    const handleDoubleClickTodo = (todo: Todo) => {
+        const changeTodo = { ...todo };
+        changeTodo.editable = !changeTodo.editable;
+        props.updateItem(todo, changeTodo);
+    }
+
+    const handleKeyDownTodo =
+        (e: React.KeyboardEvent<HTMLInputElement>, todo: Todo) => {
+            if (e.key === "Enter") {
+                const changeTodo = { ...todo };
+                changeTodo.content = (e.target as HTMLInputElement).value;
+                changeTodo.editable = !changeTodo.editable;
+                props.updateItem(todo, changeTodo);
+            }
+        }
+
+    const handleClickDeleteButton = (todo: Todo) => {
+        props.deleteItem(Array(todo));
+    }
+
+    if (props.todo.editable) {
         return (
             <li
-                key={todo.id}
-                className={todo.isCompleted ? "item checked" : "item"}>
+                key={props.todo.id}
+                className={props.todo.isCompleted ? "item checked" : "item"}>
                 <input
                     className="input"
-                    onKeyDown={(e) => props.onKeyDownTodo(e, todo)}
-                    defaultValue={todo.content}>
+                    onKeyDown={(e) => handleKeyDownTodo(e, props.todo)}
+                    defaultValue={props.todo.content}>
                 </input>
             </li >
         );
     } else {
         return (
             <li
-                key={todo.id}
-                className={todo.isCompleted ? "item checked" : "item"}>
+                key={props.todo.id}
+                className={props.todo.isCompleted ? "item checked" : "item"}>
                 <div
                     className="checkbox"
-                    onClick={() => props.onClickCheckbox(todo)}>
-                    {todo.isCompleted ? '✔' : ''}
+                    onClick={() => handleClickCheckbox(props.todo)}>
+                    {props.todo.isCompleted ? '✔' : ''}
                 </div>
                 <div
                     className="todo"
-                    onDoubleClick={() => props.onDoubleClickTodo(todo)}>
-                    {todo.content}
+                    onDoubleClick={() => handleDoubleClickTodo(props.todo)}>
+                    {props.todo.content}
                 </div>
                 <button
                     className="deleteButton"
-                    onClick={() => props.onClickDeleteButton(todo)}>
+                    onClick={() => handleClickDeleteButton(props.todo)}>
                     {'X'}
                 </button>
             </li >
