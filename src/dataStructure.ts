@@ -8,6 +8,6 @@ export type Todo = {
 export interface TodoListProps {
     todos: Todo[]
     addItem(todo: Todo): void;
-    removeItem(todo: Todo): void;
-    editItem(nowTodo: Todo, afterChangeTodo: Todo): void;
+    deleteItem(todosToDelete: Todo[]): void;
+    updateItem(nowTodo: Todo, afterChangeTodo: Todo): void;
 }

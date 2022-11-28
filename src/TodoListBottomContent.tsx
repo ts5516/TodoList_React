@@ -3,17 +3,19 @@ import { Todo } from './dataStructure';
 
 type Props = {
     todos: Todo[],
-    removeItem(todo: Todo): void;
+    deleteItem(todosToDelete: Todo[]): void;
 }
 
 export function TodoListBottomContent(props: Props) {
     function handleClickRemoveCheckedItemButton(): void {
         const todos = props.todos;
+        const todosToDelete: Todo[] = [];
         for (let i = todos.length; i--;) {
             if (todos[i].isCompleted) {
-                props.removeItem(todos[i]);
+                todosToDelete.push(todos[i]);
             }
         }
+        props.deleteItem(todosToDelete);
     }
 
     function getLeftItem(): number {

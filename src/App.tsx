@@ -17,27 +17,27 @@ class App extends React.Component<Props, State> {
     }
   }
 
-  addListItem(todo: Todo) {
+  addTodoListItem(todo: Todo) {
     this.setState({
       todos: this.state.todos.concat(todo)
     });
   }
 
-  removeListItem(todo: Todo) {
-    const _todos = this.state.todos;
-    const index = _todos.indexOf(todo);
-    _todos.splice(index, 1);
+  deleteTodoListItem(todosToDelete: Todo[]) {
     this.setState({
-      todos: _todos
+      todos: this.state.todos.filter(todo => todosToDelete.indexOf(todo) < 0)
     });
   }
 
-  editListItem(todo: Todo, afterChangeTodo: Todo) {
-    const _todos = this.state.todos;
-    const index = _todos.indexOf(todo);
-    _todos[index] = afterChangeTodo;
+  updateTodoListItem(todo: Todo, afterChangeTodo: Todo) {
     this.setState({
-      todos: _todos
+      todos: this.state.todos.map((_todo) => {
+        if (_todo === todo) {
+          return afterChangeTodo;
+        } else {
+          return _todo;
+        }
+      })
     });
   }
 
@@ -47,18 +47,20 @@ class App extends React.Component<Props, State> {
         <div className="title">Todo List</div>
         <div className="contentWrapper">
           <TodoListInputHeader
-            addItem={(todo) => this.addListItem(todo)} />
+            addItem={(todo) => this.addTodoListItem(todo)} />
           <TodoListBody
             todos={this.state.todos}
-            addItem={(todo) => this.addListItem(todo)}
-            removeItem={(todo) => this.removeListItem(todo)}
-            editItem={
+            addItem={(todo) => this.addTodoListItem(todo)}
+            deleteItem={(todoToDelete) => this.deleteTodoListItem(todoToDelete)}
+            updateItem={
               (todo, afterChangeTodo) =>
-                this.editListItem(todo, afterChangeTodo)
+                this.updateTodoListItem(todo, afterChangeTodo)
             } />
           <TodoListBottomContent
             todos={this.state.todos}
-            removeItem={(todo) => this.removeListItem(todo)} />
+            deleteItem={
+              (todoToDelete) => this.deleteTodoListItem(todoToDelete)
+            } />
         </div>
         <p className='info'>더블클릭 시 수정 가능!</p>
       </div>

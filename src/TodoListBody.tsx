@@ -6,13 +6,13 @@ export class TodoListBody extends React.Component<TodoListProps>  {
     handleClickCheckbox(todo: Todo): void {
         const changeTodo = todo;
         changeTodo.isCompleted = !todo.isCompleted;
-        this.props.editItem(todo, changeTodo);
+        this.props.updateItem(todo, changeTodo);
     }
 
     handleDoubleClickTodo(todo: Todo): void {
         const changeTodo = todo;
         changeTodo.editable = !changeTodo.editable;
-        this.props.editItem(todo, changeTodo);
+        this.props.updateItem(todo, changeTodo);
     }
 
     handleKeyDownTodo(e: React.KeyboardEvent<HTMLInputElement>, todo: Todo)
@@ -21,19 +21,19 @@ export class TodoListBody extends React.Component<TodoListProps>  {
             const changeTodo = todo;
             changeTodo.content = (e.target as HTMLInputElement).value;
             changeTodo.editable = !changeTodo.editable;
-            this.props.editItem(todo, changeTodo);
+            this.props.updateItem(todo, changeTodo);
         }
     }
 
     handleClickDeleteButton(todo: Todo): void {
-        this.props.removeItem(todo);
+        this.props.deleteItem(Array(todo));
     }
 
     handleClickRemoveCheckedItemButton(): void {
         const todos = this.props.todos;
         for (let i = todos.length; i--;) {
             if (todos[i].isCompleted) {
-                this.props.removeItem(todos[i]);
+                this.props.deleteItem(Array(todos[i]));
             }
         }
     }
@@ -57,5 +57,4 @@ export class TodoListBody extends React.Component<TodoListProps>  {
             </ul>
         );
     }
-
 }
