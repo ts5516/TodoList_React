@@ -1,12 +1,10 @@
 import React from 'react';
 import uuid from 'react-uuid';
-import { Todo } from './dataStructure';
+import { TodoListFunction } from './App';
 
-type Props = {
-    addItem(todo: Todo): void;
-}
+export function TodoListInputHeader(): JSX.Element {
+    const todoListFunc = React.useContext(TodoListFunction);
 
-export function TodoListInputHeader(props: Props): JSX.Element {
     function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === "Enter") {
             const todo = {
@@ -15,7 +13,7 @@ export function TodoListInputHeader(props: Props): JSX.Element {
                 isCompleted: false,
                 editable: false
             }
-            props.addItem(todo);
+            todoListFunc.addItem(todo);
             (e.target as HTMLInputElement).value = '';
         }
     }

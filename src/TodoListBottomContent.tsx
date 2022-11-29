@@ -1,21 +1,22 @@
 import { Todo } from './dataStructure';
+import React from 'react';
+import { TodoListFunction } from './App';
 
-
-type Props = {
-    todos: Todo[];
-    deleteItem(todosToDelete: Todo[]): void;
-}
+type Props = { todos: Todo[]; }
 
 export function TodoListBottomContent(props: Props) {
+    const todoListFunc = React.useContext(TodoListFunction);
+
     function handleClickRemoveCheckedItemButton(): void {
         const todos = props.todos;
         const todosToDelete: Todo[] = [];
+
         for (let i = todos.length; i--;) {
             if (todos[i].isCompleted) {
                 todosToDelete.push(todos[i]);
             }
         }
-        props.deleteItem(todosToDelete);
+        todoListFunc.deleteItem(todosToDelete);
     }
 
     function getLeftItem(): number {

@@ -6,14 +6,20 @@ import { Todo } from './dataStructure';
 
 type Props = {};
 type State = {
-  todos: Todo[]
+  todos: Todo[],
 };
+
+const TodoListFunction = React.createContext({
+  addItem: (todo: Todo) => { },
+  deleteItem: (todoToDelete: Todo[]) => { },
+  updateItem: (todo: Todo, afterChangeTodo: Todo) => { }
+});
 
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      todos: []
+      todos: [],
     }
   }
 
@@ -42,36 +48,32 @@ class App extends React.Component<Props, State> {
   }
 
   render(): React.ReactNode {
-    const renderTodoList = this.state.todos.map((todo) => {
-      return (
-        <TodoListItem
-          todo={todo}
-          addItem={(todo) => this.addTodoListItem(todo)}
-          deleteItem={(todoToDelete) => this.deleteTodoListItem(todoToDelete)}
-          updateItem={(todo, afterChangeTodo) => this.updateTodoListItem(todo, afterChangeTodo)}
-        />
-      );
-    });
+    const todoListFunc = {
+      addItem: this.addTodoListItem,
+      deleteItem: this.deleteTodoListItem,
+      updateItem: this.updateTodoListItem
+    };
 
     return (
       <div className="app" >
         <div className="title">Todo List</div>
         <div className="contentWrapper">
-          <TodoListInputHeader
-            addItem={(todo) => this.addTodoListItem(todo)} />
-          <ul className="list">
-            {renderTodoList}
-          </ul>
-          <TodoListBottomContent
-            todos={this.state.todos}
-            deleteItem={
-              (todoToDelete) => this.deleteTodoListItem(todoToDelete)
-            } />
+          <TodoListFunction.Provider value={todoListFunc}>
+            <TodoListInputHeader />
+            <ul className="todoList">
+              {
+                this.state.todos.map((todo) => {
+                  return (<TodoListItem todo={todo} />)
+                })
+              }
+            </ul>
+            <TodoListBottomContent todos={this.state.todos} />
+          </TodoListFunction.Provider>
         </div>
         <p className='info'>더블클릭 시 수정 가능!</p>
-      </div>
+      </div >
     );
   }
 }
 
-export default App;
+export { App, TodoListFunction };

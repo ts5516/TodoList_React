@@ -1,24 +1,24 @@
 import React from 'react';
 import { Todo } from './dataStructure';
+import { TodoListFunction } from './App';
 
 type Props = {
     todo: Todo;
-    addItem(todo: Todo): void;
-    deleteItem(todosToDelete: Todo[]): void;
-    updateItem(nowTodo: Todo, afterChangeTodo: Todo): void;
 }
 
 export function TodoListItem(props: Props) {
+    const todoListFunc = React.useContext(TodoListFunction);
+
     const handleClickCheckbox = (todo: Todo) => {
         const changeTodo = { ...todo };
         changeTodo.isCompleted = !changeTodo.isCompleted;
-        props.updateItem(todo, changeTodo);
+        todoListFunc.updateItem(todo, changeTodo);
     }
 
     const handleDoubleClickTodo = (todo: Todo) => {
         const changeTodo = { ...todo };
         changeTodo.editable = !changeTodo.editable;
-        props.updateItem(todo, changeTodo);
+        todoListFunc.updateItem(todo, changeTodo);
     }
 
     const handleKeyDownTodo =
@@ -27,12 +27,12 @@ export function TodoListItem(props: Props) {
                 const changeTodo = { ...todo };
                 changeTodo.content = (e.target as HTMLInputElement).value;
                 changeTodo.editable = !changeTodo.editable;
-                props.updateItem(todo, changeTodo);
+                todoListFunc.updateItem(todo, changeTodo);
             }
         }
 
     const handleClickDeleteButton = (todo: Todo) => {
-        props.deleteItem(Array(todo));
+        todoListFunc.deleteItem(Array(todo));
     }
 
     if (props.todo.editable) {
