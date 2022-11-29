@@ -1,13 +1,46 @@
 import React from 'react';
-import { Todo } from './dataStructure';
-import { TodoListFunction } from './App';
+import { Todo, TodoListType, TodoList } from './dataStructure';
 
-type Props = {
-    todo: Todo;
-}
+type Props = { todo: Todo }
 
 export function TodoListItem(props: Props) {
-    const todoListFunc = React.useContext(TodoListFunction);
+    const todo = props.todo;
+
+    return (
+        <li
+            key={todo.id}
+            className={todo.isCompleted ? "item checked" : "item"}>
+            {todo.editable ?
+                <EditableTodoListItem todo={todo} />
+                : <UneditableTodoListItem todo={todo} />}
+        </li >
+    );
+}
+
+function EditableTodoListItem(props: Props) {
+    const todoListFunc = React.useContext(TodoList) as TodoListType;
+
+    const handleKeyDownTodo =
+        (e: React.KeyboardEvent<HTMLInputElement>, todo: Todo) => {
+            if (e.key === "Enter") {
+                const changeTodo = { ...todo };
+                changeTodo.content = (e.target as HTMLInputElement).value;
+                changeTodo.editable = !changeTodo.editable;
+                todoListFunc.updateItem(todo, changeTodo);
+            }
+        }
+
+    return (
+        <input
+            className="input"
+            onKeyDown={(e) => handleKeyDownTodo(e, props.todo)}
+            defaultValue={props.todo.content}>
+        </input>
+    );
+}
+
+function UneditableTodoListItem(props: Props) {
+    const todoListFunc = React.useContext(TodoList) as TodoListType;
 
     const handleClickCheckbox = (todo: Todo) => {
         const changeTodo = { ...todo };
@@ -21,53 +54,28 @@ export function TodoListItem(props: Props) {
         todoListFunc.updateItem(todo, changeTodo);
     }
 
-    const handleKeyDownTodo =
-        (e: React.KeyboardEvent<HTMLInputElement>, todo: Todo) => {
-            if (e.key === "Enter") {
-                const changeTodo = { ...todo };
-                changeTodo.content = (e.target as HTMLInputElement).value;
-                changeTodo.editable = !changeTodo.editable;
-                todoListFunc.updateItem(todo, changeTodo);
-            }
-        }
-
     const handleClickDeleteButton = (todo: Todo) => {
         todoListFunc.deleteItem(Array(todo));
     }
 
-    if (props.todo.editable) {
-        return (
-            <li
-                key={props.todo.id}
-                className={props.todo.isCompleted ? "item checked" : "item"}>
-                <input
-                    className="input"
-                    onKeyDown={(e) => handleKeyDownTodo(e, props.todo)}
-                    defaultValue={props.todo.content}>
-                </input>
-            </li >
-        );
-    } else {
-        return (
-            <li
-                key={props.todo.id}
-                className={props.todo.isCompleted ? "item checked" : "item"}>
-                <div
-                    className="checkbox"
-                    onClick={() => handleClickCheckbox(props.todo)}>
-                    {props.todo.isCompleted ? '✔' : ''}
-                </div>
-                <div
-                    className="todo"
-                    onDoubleClick={() => handleDoubleClickTodo(props.todo)}>
-                    {props.todo.content}
-                </div>
-                <button
-                    className="deleteButton"
-                    onClick={() => handleClickDeleteButton(props.todo)}>
-                    {'X'}
-                </button>
-            </li >
-        );
-    }
+    const todo = props.todo;
+    return (
+        <div>
+            <div
+                className="checkbox"
+                onClick={() => handleClickCheckbox(todo)}>
+                {todo.isCompleted ? '✔' : ''}
+            </div>
+            <div
+                className="todo"
+                onDoubleClick={() => handleDoubleClickTodo(todo)}>
+                {todo.content}
+            </div>
+            <button
+                className="deleteButton"
+                onClick={() => handleClickDeleteButton(todo)}>
+                {'X'}
+            </button>
+        </div>
+    );
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import uuid from 'react-uuid';
-import { TodoListFunction } from './App';
+import { TodoListType, TodoList } from './dataStructure';
 
 export function TodoListInputHeader(): JSX.Element {
-    const todoListFunc = React.useContext(TodoListFunction);
+    const todoListFunc = React.useContext(TodoList) as TodoListType;
 
     function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === "Enter") {

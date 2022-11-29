@@ -2,18 +2,12 @@ import React from 'react';
 import { TodoListInputHeader } from './TodoListInputHeader'
 import { TodoListItem } from './TodoListItem';
 import { TodoListBottomContent } from './TodoListBottomContent';
-import { Todo } from './dataStructure';
+import { Todo, TodoList } from './dataStructure';
 
 type Props = {};
 type State = {
   todos: Todo[],
 };
-
-const TodoListFunction = React.createContext({
-  addItem: (todo: Todo) => { },
-  deleteItem: (todoToDelete: Todo[]) => { },
-  updateItem: (todo: Todo, afterChangeTodo: Todo) => { }
-});
 
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -48,27 +42,28 @@ class App extends React.Component<Props, State> {
   }
 
   render(): React.ReactNode {
-    const todoListFunc = {
-      addItem: this.addTodoListItem,
-      deleteItem: this.deleteTodoListItem,
-      updateItem: this.updateTodoListItem
+    const todoListProps = {
+      todos: this.state.todos,
+      addItem: (todo: Todo) => this.addTodoListItem(todo),
+      deleteItem: (todoToDelete: Todo[]) =>
+        this.deleteTodoListItem(todoToDelete),
+      updateItem: (todo: Todo, afterChangeTodo: Todo) =>
+        this.updateTodoListItem(todo, afterChangeTodo)
     };
+
+    const todoListItemRender = this.state.todos.map((todo) => {
+      return (<TodoListItem todo={todo} />)
+    });
 
     return (
       <div className="app" >
         <div className="title">Todo List</div>
         <div className="contentWrapper">
-          <TodoListFunction.Provider value={todoListFunc}>
+          <TodoList.Provider value={todoListProps}>
             <TodoListInputHeader />
-            <ul className="todoList">
-              {
-                this.state.todos.map((todo) => {
-                  return (<TodoListItem todo={todo} />)
-                })
-              }
-            </ul>
-            <TodoListBottomContent todos={this.state.todos} />
-          </TodoListFunction.Provider>
+            <ul className="todoList">{todoListItemRender}</ul>
+            <TodoListBottomContent />
+          </TodoList.Provider>
         </div>
         <p className='info'>더블클릭 시 수정 가능!</p>
       </div >
@@ -76,4 +71,4 @@ class App extends React.Component<Props, State> {
   }
 }
 
-export { App, TodoListFunction };
+export { App };
