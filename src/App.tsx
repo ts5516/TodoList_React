@@ -52,7 +52,7 @@ class App extends React.Component<Props, State> {
     };
 
     const todoListItemRender = this.state.todos.map((todo) => {
-      return (<TodoListItem todo={todo} />)
+      return (<TodoListItem key={todo.id} todo={todo} />)
     });
 
     return (
