@@ -1,8 +1,7 @@
-import { Todo, TodoListType, TodoList } from './dataStructure';
-import React from 'react';
+import { Todo, useTodoList } from './TodoList';
 
 export function TodoListBottomContent() {
-    const todoListFunc = React.useContext(TodoList) as TodoListType;
+    let todoListFunc = useTodoList();
 
     function handleClickRemoveCheckedItemButton(): void {
         const todos = todoListFunc.todos;

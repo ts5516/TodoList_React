@@ -2,7 +2,7 @@ import React from 'react';
 import { TodoListInputHeader } from './TodoListInputHeader'
 import { TodoListItem } from './TodoListItem';
 import { TodoListBottomContent } from './TodoListBottomContent';
-import { Todo, TodoList } from './dataStructure';
+import { Todo, TodoList } from './TodoList';
 
 type Props = {};
 type State = {
@@ -17,19 +17,19 @@ class App extends React.Component<Props, State> {
     }
   }
 
-  addTodoListItem(todo: Todo) {
+  addTodoListItem(todo: Todo): void {
     this.setState({
       todos: this.state.todos.concat(todo)
     });
   }
 
-  deleteTodoListItem(todosToDelete: Todo[]) {
+  deleteTodoListItem(todosToDelete: Todo[]): void {
     this.setState({
       todos: this.state.todos.filter(todo => todosToDelete.indexOf(todo) < 0)
     });
   }
 
-  updateTodoListItem(todo: Todo, afterChangeTodo: Todo) {
+  updateTodoListItem(todo: Todo, afterChangeTodo: Todo): void {
     this.setState({
       todos: this.state.todos.map((_todo) => {
         if (_todo === todo) {

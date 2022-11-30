@@ -1,5 +1,5 @@
 import React from 'react';
-import { Todo, TodoListType, TodoList } from './dataStructure';
+import { Todo, useTodoList } from './TodoList';
 
 type Props = { todo: Todo }
 
@@ -13,7 +13,7 @@ export function TodoListItem(props: Props) {
 }
 
 function EditableTodoListItem(props: Props) {
-    const todoListFunc = React.useContext(TodoList) as TodoListType;
+    const todoListFunc = useTodoList();
 
     const handleKeyDownTodo =
         (e: React.KeyboardEvent<HTMLInputElement>, todo: Todo) => {
@@ -41,7 +41,7 @@ function EditableTodoListItem(props: Props) {
 }
 
 function UneditableTodoListItem(props: Props) {
-    const todoListFunc = React.useContext(TodoList) as TodoListType;
+    const todoListFunc = useTodoList();
 
     const handleClickCheckbox = (todo: Todo) => {
         const changeTodo = { ...todo };
