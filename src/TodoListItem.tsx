@@ -7,13 +7,8 @@ export function TodoListItem(props: Props) {
     const todo = props.todo;
 
     return (
-        <li
-            key={todo.id}
-            className={todo.isCompleted ? "item checked" : "item"}>
-            {todo.editable ?
-                <EditableTodoListItem todo={todo} />
-                : <UneditableTodoListItem todo={todo} />}
-        </li >
+        todo.editable ? <EditableTodoListItem todo={todo} />
+            : <UneditableTodoListItem todo={todo} />
     );
 }
 
@@ -30,12 +25,18 @@ function EditableTodoListItem(props: Props) {
             }
         }
 
+    const todo = props.todo;
     return (
-        <input
-            className="input"
-            onKeyDown={(e) => handleKeyDownTodo(e, props.todo)}
-            defaultValue={props.todo.content}>
-        </input>
+        <li
+            key={todo.id}
+            className={"item"}>
+            <input
+                className="input"
+                onKeyDown={(e) => handleKeyDownTodo(e, props.todo)}
+                defaultValue={props.todo.content}>
+            </input>
+        </li >
+
     );
 }
 
@@ -60,7 +61,9 @@ function UneditableTodoListItem(props: Props) {
 
     const todo = props.todo;
     return (
-        <div>
+        <li
+            key={todo.id}
+            className={todo.isCompleted ? "item checked" : "item"}>
             <div
                 className="checkbox"
                 onClick={() => handleClickCheckbox(todo)}>
@@ -76,6 +79,6 @@ function UneditableTodoListItem(props: Props) {
                 onClick={() => handleClickDeleteButton(todo)}>
                 {'X'}
             </button>
-        </div>
+        </li >
     );
 }
