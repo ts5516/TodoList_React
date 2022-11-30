@@ -1,7 +1,7 @@
 import { Todo, useTodoList } from './TodoList';
 
 export function TodoListBottomContent() {
-    let todoListFunc = useTodoList();
+    const todoListFunc = useTodoList();
 
     function handleClickRemoveCheckedItemButton(): void {
         const todos = todoListFunc.todos;
