@@ -5,7 +5,7 @@ import { useTodoList } from './TodoList';
 export function TodoListInputHeader(): JSX.Element {
     const todoListFunc = useTodoList();
 
-    function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             const todo = {
                 id: uuid(),

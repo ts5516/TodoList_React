@@ -3,7 +3,7 @@ import { Todo, useTodoList } from './TodoList';
 export function TodoListBottomContent() {
     const todoListFunc = useTodoList();
 
-    function handleClickRemoveCheckedItemButton(): void {
+    const handleClickRemoveCheckedItemButton = (): void => {
         const todos = todoListFunc.todos;
         const todosToDelete: Todo[] = [];
 
@@ -15,7 +15,7 @@ export function TodoListBottomContent() {
         todoListFunc.deleteItem(todosToDelete);
     }
 
-    function getLeftItem(): number {
+    const getLeftItem = (): number => {
         const todos = todoListFunc.todos;
         return todos.filter(todo => todo.isCompleted === false).length;
     }
